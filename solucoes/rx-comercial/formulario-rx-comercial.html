@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scan — Formulário | REVIZI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --roxo: #5415A3; --lilas: #A863FF; --dourado: #C89B4A;
+    --bg1: #090414; --bg2: #150D27; --cinza: #CCCCCC; --branco: #FFFFFF;
+    --verde: #4CAF7D; --amarelo: #D9A441; --vermelho: #D9534F;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background: var(--bg1); color: var(--branco); font-family:'Inter',sans-serif; line-height:1.6; }
+  .wrap { max-width: 620px; margin:0 auto; padding: 40px 24px 80px; }
+  .brand { text-align:center; margin-bottom:8px; }
+  .brand-name { font-family:'Cormorant Garamond',serif; font-weight:700; font-size:24px; color:var(--dourado); }
+  .brand-tag { font-size:10.5px; color:var(--cinza); letter-spacing:2px; text-transform:uppercase; margin-top:2px; }
+
+  .intro { text-align:center; margin:32px 0 8px; }
+  .intro h1 { font-family:'Cormorant Garamond',serif; font-size:28px; color:var(--branco); }
+  .intro h1 em { color:var(--dourado); font-style:italic; }
+  .intro p { font-size:13.5px; color:var(--cinza); margin-top:10px; max-width:440px; margin-left:auto; margin-right:auto; }
+
+  .progress-track { height:6px; background:var(--bg2); border-radius:4px; margin:28px 0 6px; overflow:hidden; }
+  .progress-fill { height:100%; width:0%; background:linear-gradient(90deg,var(--roxo),var(--dourado)); transition:width .3s ease; }
+  .progress-label { text-align:center; font-size:11.5px; color:var(--cinza); margin-bottom:28px; }
+
+  .step { display:none; }
+  .step.active { display:block; }
+
+  .step-card { background:var(--bg2); border-radius:16px; padding:32px 26px; border:1px solid rgba(200,155,74,0.2); }
+  .step-eyebrow { font-size:11px; color:var(--lilas); font-weight:700; letter-spacing:1.5px; text-transform:uppercase; margin-bottom:10px; }
+  .step-question { font-family:'Cormorant Garamond',serif; font-size:22px; color:var(--branco); margin-bottom:22px; line-height:1.3; }
+
+  .opcao { display:block; background:var(--bg1); border:1.5px solid rgba(255,255,255,0.08); border-radius:12px; padding:16px 18px; margin-bottom:12px; cursor:pointer; transition:border-color .15s, background .15s; }
+  .opcao:hover { border-color:var(--dourado); }
+  .opcao input { display:none; }
+  .opcao-texto { font-size:14px; color:var(--branco); }
+  .opcao.selected { border-color:var(--dourado); background:rgba(200,155,74,0.08); }
+
+  .campo { margin-bottom:18px; }
+  .campo label { display:block; font-size:12.5px; color:var(--dourado); font-weight:600; margin-bottom:6px; }
+  .campo input { width:100%; background:var(--bg1); border:1.5px solid rgba(255,255,255,0.1); border-radius:10px; padding:13px 14px; color:var(--branco); font-size:14px; font-family:'Inter',sans-serif; }
+  .campo input:focus { outline:none; border-color:var(--dourado); }
+  .campo input.invalido { border-color:var(--vermelho); }
+  .erro-campo { display:none; font-size:11.5px; color:var(--vermelho); margin-top:6px; }
+  .erro-campo.visivel { display:block; }
+
+  .nav-buttons { display:flex; justify-content:space-between; margin-top:24px; }
+  .btn { background:var(--roxo); color:var(--branco); font-weight:700; font-size:14.5px; padding:13px 28px; border-radius:10px; border:none; cursor:pointer; }
+  .btn:disabled { opacity:0.35; cursor:not-allowed; }
+  .btn-voltar { background:none; color:var(--cinza); font-size:13.5px; border:none; cursor:pointer; padding:13px 10px; }
+
+  .processando { text-align:center; padding:60px 20px; }
+  .ampulheta { font-size:52px; margin:0 auto 24px; animation: pulsarAmpulheta 1s ease-in-out infinite; display:inline-block; }
+  @keyframes pulsarAmpulheta { 0%,100%{ transform:scale(1); opacity:1; } 50%{ transform:scale(1.12); opacity:0.75; } }
+  .processando p { color:var(--cinza); font-size:14px; transition:opacity .25s ease; }
+
+  .resultado-pronto { text-align:center; padding:20px; }
+  .resultado-pronto .check { font-size:44px; margin-bottom:16px; }
+  .resultado-pronto h2 { font-family:'Cormorant Garamond',serif; font-size:26px; color:var(--dourado); margin-bottom:10px; }
+  .resultado-pronto p { color:var(--cinza); font-size:14px; margin-bottom:26px; }
+
+  .footer-note { text-align:center; font-size:12px; color:var(--cinza); opacity:0.7; margin-top:24px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="brand">
+    <div class="brand-name">REVIZI</div>
+    <div class="brand-tag">Estruturação Comercial</div>
+  </div>
+
+  <div class="intro">
+    <h1>Seu <em>Scan</em></h1>
+    <p>7 perguntas rápidas. Leva menos de 3 minutos. No final, você recebe sua leitura de maturidade comercial.</p>
+  </div>
+
+  <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+  <div class="progress-label" id="progressLabel">Etapa 1 de 8</div>
+
+  <form id="rxForm">
+
+    <!-- ETAPA 0 — Dados de contato -->
+    <div class="step active" data-step="0">
+      <div class="step-card">
+        <div class="step-eyebrow">Antes de começar</div>
+        <div class="step-question">Pra quem enviamos o resultado?</div>
+        <div class="campo"><label>Nome</label><input type="text" name="nome" required></div>
+        <div class="campo"><label>Empresa</label><input type="text" name="empresa" required></div>
+        <div class="campo"><label>E-mail</label><input type="email" name="email" id="campoEmail" placeholder="seuemail@exemplo.com" required><span class="erro-campo" id="erroEmail">Digite um e-mail válido, com @ e domínio (ex: nome@empresa.com)</span></div>
+        <div class="campo"><label>WhatsApp</label><input type="tel" name="whatsapp" id="campoWhatsapp" placeholder="(85) 99999-9999" maxlength="15" required><span class="erro-campo" id="erroWhatsapp">Digite um WhatsApp válido, com DDD (ex: (85) 99999-9999)</span></div>
+      </div>
+    </div>
+
+    <!-- ETAPA 1 — D1 Oferta -->
+    <div class="step" data-step="1">
+      <div class="step-card">
+        <div class="step-eyebrow">Estrutura de Oferta</div>
+        <div class="step-question">Você consegue me mostrar seu material comercial atual (apresentação, catálogo, proposta-padrão)?</div>
+        <label class="opcao"><input type="radio" name="d1" value="0"><span class="opcao-texto">Não tenho nada assim, ou o que eu diria não bate com o que existe</span></label>
+        <label class="opcao"><input type="radio" name="d1" value="5"><span class="opcao-texto">Sei explicar bem, mas o material está desatualizado ou nem existe</span></label>
+        <label class="opcao"><input type="radio" name="d1" value="10"><span class="opcao-texto">Tenho material atualizado e ele reflete exatamente o que ofereço</span></label>
+      </div>
+    </div>
+
+    <!-- ETAPA 2 — D2 Tração -->
+    <div class="step" data-step="2">
+      <div class="step-card">
+        <div class="step-eyebrow">Tração Comercial</div>
+        <div class="step-question">Como novos clientes chegam até você hoje?</div>
+        <label class="opcao"><input type="radio" name="d2" value="0"><span class="opcao-texto">100% por indicação ou cliente que me procura espontaneamente</span></label>
+        <label class="opcao"><input type="radio" name="d2" value="5"><span class="opcao-texto">Faço ações esporádicas (anúncio, abordagem), sem rotina constante</span></label>
+        <label class="opcao"><input type="radio" name="d2" value="10"><span class="opcao-texto">Tenho canal ativo e previsível, com fluxo de contatos regular</span></label>
+      </div>
+    </div>
+
+    <!-- ETAPA 3 — D3 Governança -->
+    <div class="step" data-step="3">
+      <div class="step-card">
+        <div class="step-eyebrow">Governança de Decisão</div>
+        <div class="step-question">Quais indicadores você olha para gerenciar o comercial do negócio?</div>
+        <label class="opcao"><input type="radio" name="d3" value="0"><span class="opcao-texto">Só o saldo da conta e o faturamento do mês</span></label>
+        <label class="opcao"><input type="radio" name="d3" value="5"><span class="opcao-texto">Relatórios contábeis, mas sem cruzar com dado de venda</span></label>
+        <label class="opcao"><input type="radio" name="d3" value="10"><span class="opcao-texto">Indicadores comerciais — conversão, ticket, origem de cliente</span></label>
+      </div>
+    </div>
+
+    <!-- ETAPA 4 — D4 Presença Digital -->
+    <div class="step" data-step="4">
+      <div class="step-card">
+        <div class="step-eyebrow">Presença Digital</div>
+        <div class="step-question">Se eu buscar sua empresa agora no Google, o que eu encontro?</div>
+        <label class="opcao"><input type="radio" name="d4" value="0"><span class="opcao-texto">Pouca coisa, ou algo desatualizado que passa amadorismo</span></label>
+        <label class="opcao"><input type="radio" name="d4" value="5"><span class="opcao-texto">Existe presença, mas incompleta ou sem jeito de virar contato</span></label>
+        <label class="opcao"><input type="radio" name="d4" value="10"><span class="opcao-texto">Presença profissional, fácil de encontrar e de confiar</span></label>
+      </div>
+    </div>
+
+    <!-- ETAPA 5 — D5 Conversão -->
+    <div class="step" data-step="5">
+      <div class="step-card">
+        <div class="step-eyebrow">Capacidade de Conversão</div>
+        <div class="step-question">Onde ficam registradas suas oportunidades de venda em andamento?</div>
+        <label class="opcao"><input type="radio" name="d5" value="0"><span class="opcao-texto">No WhatsApp pessoal, ou de cabeça mesmo</span></label>
+        <label class="opcao"><input type="radio" name="d5" value="5"><span class="opcao-texto">Numa planilha ou CRM simples, mas nem sempre atualizo</span></label>
+        <label class="opcao"><input type="radio" name="d5" value="10"><span class="opcao-texto">CRM organizado, atualizado, com visão clara de cada etapa</span></label>
+      </div>
+    </div>
+
+    <!-- ETAPA 6 — D6 Dado -->
+    <div class="step" data-step="6">
+      <div class="step-card">
+        <div class="step-eyebrow">Maturidade de Dado</div>
+        <div class="step-question">Você consegue extrair agora um relatório de vendas por canal de origem?</div>
+        <label class="opcao"><input type="radio" name="d6" value="0"><span class="opcao-texto">Não sei nem quantos clientes ativos eu tenho hoje</span></label>
+        <label class="opcao"><input type="radio" name="d6" value="5"><span class="opcao-texto">Sei de cabeça, mas não consigo tirar isso do sistema</span></label>
+        <label class="opcao"><input type="radio" name="d6" value="10"><span class="opcao-texto">Sim, tenho dado centralizado e acessível</span></label>
+      </div>
+    </div>
+
+    <!-- ETAPA 7 — Processando -->
+    <div class="step" data-step="7">
+      <div class="processando">
+        <div class="ampulheta">⏳</div>
+        <p id="msgProcessando">Lendo suas respostas...</p>
+      </div>
+    </div>
+
+    <!-- ETAPA 8 — Resultado -->
+    <div class="step" data-step="8">
+      <div class="resultado-pronto">
+        <div class="check">✅</div>
+        <h2>Seu Scan está pronto.</h2>
+        <p id="resultadoResumo">Enviamos o link completo para o seu e-mail e WhatsApp.</p>
+        <a href="relatorio-rx-comercial.html" class="btn" id="btnVerResultado" style="text-decoration:none; display:inline-block;">Ver meu resultado agora</a>
+      </div>
+    </div>
+
+  </form>
+
+  <div class="nav-buttons" id="navButtons">
+    <button type="button" class="btn-voltar" id="btnVoltar">← Voltar</button>
+    <button type="button" class="btn" id="btnAvancar">Continuar →</button>
+  </div>
+
+  <p class="footer-note">Suas respostas são usadas exclusivamente para gerar sua leitura de maturidade comercial. Sem custo nesta etapa.</p>
+</div>
+
+<script>
+  const steps = document.querySelectorAll('.step');
+  const totalSteps = steps.length; // 0 a 8 = 9 etapas
+  let current = 0;
+
+  const progressFill = document.getElementById('progressFill');
+  const progressLabel = document.getElementById('progressLabel');
+  const btnVoltar = document.getElementById('btnVoltar');
+  const btnAvancar = document.getElementById('btnAvancar');
+  const navButtons = document.getElementById('navButtons');
+
+  // seleção visual dos radios
+  document.querySelectorAll('.opcao input[type=radio]').forEach(inp => {
+    inp.addEventListener('change', () => {
+      document.querySelectorAll(`input[name="${inp.name}"]`).forEach(i => {
+        i.closest('.opcao').classList.remove('selected');
+      });
+      inp.closest('.opcao').classList.add('selected');
+    });
+  });
+
+  function simularProcessamento() {
+    const mensagens = [
+      'Lendo suas respostas...',
+      'Calculando indicadores por dimensão...',
+      'Cruzando com a base de referência REVIZI...',
+      'Estruturando seu plano de ação...',
+    ];
+    const msgEl = document.getElementById('msgProcessando');
+    let idx = 0;
+    msgEl.textContent = mensagens[0];
+
+    const intervalo = setInterval(() => {
+      idx++;
+      if (idx < mensagens.length) {
+        msgEl.style.opacity = '0';
+        setTimeout(() => { msgEl.textContent = mensagens[idx]; msgEl.style.opacity = '1'; }, 250);
+      }
+    }, 1250);
+
+    setTimeout(() => {
+      clearInterval(intervalo);
+      current = 8; showStep(8);
+    }, 5000);
+  }
+
+  function showStep(i) {
+    steps.forEach(s => s.classList.remove('active'));
+    steps[i].classList.add('active');
+    progressFill.style.width = `${(i/(totalSteps-1))*100}%`;
+    progressLabel.textContent = `Etapa ${i+1} de ${totalSteps-1}`;
+
+    if (i === 0) { btnVoltar.style.visibility = 'hidden'; } else { btnVoltar.style.visibility = 'visible'; }
+
+    if (i === 7) {
+      navButtons.style.display = 'none';
+      calcularResultado();
+      simularProcessamento();
+    } else if (i === 8) {
+      navButtons.style.display = 'none';
+    } else {
+      navButtons.style.display = 'flex';
+    }
+  }
+
+  // ===== MÁSCARA DE TELEFONE =====
+  const campoWhatsapp = document.getElementById('campoWhatsapp');
+  campoWhatsapp.addEventListener('input', () => {
+    let v = campoWhatsapp.value.replace(/\D/g, '').slice(0, 11);
+    if (v.length > 10) v = `(${v.slice(0,2)}) ${v.slice(2,7)}-${v.slice(7)}`;
+    else if (v.length > 6) v = `(${v.slice(0,2)}) ${v.slice(2,6)}-${v.slice(6)}`;
+    else if (v.length > 2) v = `(${v.slice(0,2)}) ${v.slice(2)}`;
+    else if (v.length > 0) v = `(${v}`;
+    campoWhatsapp.value = v;
+  });
+
+  // ===== REGRAS DE TRAVA — e-mail e telefone reais =====
+  const REGEX_EMAIL = /^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/;
+  const REGEX_WHATSAPP = /^\(\d{2}\)\s\d{4,5}-\d{4}$/;
+
+  function validarEtapaAtual() {
+    const stepEl = steps[current];
+
+    // Validação específica da Etapa 0 (dados de contato)
+    if (current === 0) {
+      let ok = true;
+      const nome = document.querySelector('input[name="nome"]');
+      const empresa = document.querySelector('input[name="empresa"]');
+      const email = document.getElementById('campoEmail');
+      const whats = document.getElementById('campoWhatsapp');
+
+      [nome, empresa].forEach(inp => { if (!inp.value.trim()) { inp.classList.add('invalido'); ok = false; } else inp.classList.remove('invalido'); });
+
+      const emailValido = REGEX_EMAIL.test(email.value.trim());
+      email.classList.toggle('invalido', !emailValido);
+      document.getElementById('erroEmail').classList.toggle('visivel', !emailValido);
+      if (!emailValido) ok = false;
+
+      const whatsValido = REGEX_WHATSAPP.test(whats.value.trim());
+      whats.classList.toggle('invalido', !whatsValido);
+      document.getElementById('erroWhatsapp').classList.toggle('visivel', !whatsValido);
+      if (!whatsValido) ok = false;
+
+      return ok;
+    }
+
+    // Demais etapas — perguntas de múltipla escolha
+    const radios = stepEl.querySelectorAll('input[type=radio]');
+    if (radios.length > 0) {
+      const nome = radios[0].name;
+      if (!document.querySelector(`input[name="${nome}"]:checked`)) return false;
+    }
+    return true;
+  }
+
+  btnAvancar.addEventListener('click', () => {
+    if (!validarEtapaAtual()) {
+      if (current !== 0) alert('Selecione uma opção antes de continuar.');
+      return;
+    }
+    if (current < totalSteps - 1) { current++; showStep(current); }
+  });
+
+  btnVoltar.addEventListener('click', () => {
+    if (current > 0) { current--; showStep(current); }
+  });
+
+  // ===== ENDPOINT DO BACKEND (Google Apps Script) =====
+  // Substituir pela URL real depois de implantar o Apps Script (termina em /exec)
+  const RX_BACKEND_URL = 'https://script.google.com/macros/s/AKfycbyhWdimekbaK2spCF2CfdYsyd8iVJKQSExgwM-wyk1jA14GV55-P4w9P2IppdM2NQzJtw/exec';
+
+  // Regra de pontuação — 0/5/10 por dimensão, mesma escala da Sonda
+  function calcularResultado() {
+    const dims = ['d1','d2','d3','d4','d5','d6'];
+    const respostas = {};
+    let soma = 0;
+    dims.forEach(d => {
+      const sel = document.querySelector(`input[name="${d}"]:checked`);
+      const val = sel ? parseInt(sel.value) : 0;
+      respostas[d] = val;
+      soma += val;
+    });
+    const notaGeral = (soma / (dims.length * 10)) * 10; // escala 0-10
+
+    respostas.nome = document.querySelector('input[name="nome"]').value;
+    respostas.empresa = document.querySelector('input[name="empresa"]').value;
+    respostas.email = document.querySelector('input[name="email"]').value;
+    respostas.whatsapp = document.querySelector('input[name="whatsapp"]').value;
+    respostas.notaGeral = notaGeral;
+
+    // Guarda localmente — usado pelo relatório dinâmico na mesma sessão do navegador
+    localStorage.setItem('rxComercialRespostas', JSON.stringify(respostas));
+
+    // Envia pro backend — é isso que garante que a REVIZI recebe o lead de verdade
+    if (RX_BACKEND_URL && RX_BACKEND_URL.indexOf('COLE_AQUI') === -1) {
+      fetch(RX_BACKEND_URL, {
+        method: 'POST',
+        body: JSON.stringify(respostas),
+      }).catch(err => {
+        console.error('Falha ao enviar pro backend (o resultado local ainda funciona):', err);
+      });
+    }
+
+    document.getElementById('resultadoResumo').textContent =
+      `Nota geral de maturidade: ${notaGeral.toFixed(1)}. Enviamos o relatório completo para o seu e-mail e WhatsApp.`;
+  }
+
+  showStep(0);
+</script>
+</body>
+</html>
