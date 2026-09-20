@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sonda — Pagamento | REVIZI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root { --roxo:#5415A3; --lilas:#A863FF; --dourado:#C89B4A; --bg1:#090414; --bg2:#150D27; --cinza:#CCCCCC; --branco:#FFFFFF; --erro:#D9534F; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--bg1); color:var(--branco); font-family:'Inter',sans-serif; line-height:1.6; }
+  .wrap { max-width:520px; margin:0 auto; padding:44px 26px 60px; }
+
+  .brand { text-align:center; margin-bottom:28px; }
+  .brand-name { font-family:'Cormorant Garamond',serif; font-weight:700; font-size:22px; color:var(--dourado); }
+
+  .eyebrow { font-size:12px; color:var(--lilas); font-weight:700; letter-spacing:2px; text-transform:uppercase; text-align:center; margin-bottom:10px; }
+  .h1 { font-family:'Cormorant Garamond',serif; font-size:26px; font-weight:700; text-align:center; margin-bottom:24px; }
+
+  .resumo { background:var(--bg2); border-radius:12px; padding:18px 20px; margin-bottom:24px; display:flex; justify-content:space-between; align-items:center; }
+  .resumo-produto { font-size:14px; color:var(--cinza); }
+  .resumo-valor { font-family:'Cormorant Garamond',serif; font-size:22px; color:var(--dourado); font-weight:700; }
+
+  .campo { margin-bottom:16px; }
+  .campo label { display:block; font-size:12.5px; color:var(--cinza); margin-bottom:6px; }
+  .campo input { width:100%; background:var(--bg2); border:1px solid rgba(255,255,255,0.1); border-radius:8px; padding:12px 14px; color:var(--branco); font-size:14px; }
+  .campo input:focus { outline:none; border-color:var(--lilas); }
+
+  .btn-pagar { display:block; width:100%; background:var(--roxo); color:var(--branco); font-weight:700; font-size:15px; padding:16px; border:none; border-radius:10px; cursor:pointer; margin-top:8px; }
+  .btn-pagar:disabled { opacity:0.5; cursor:not-allowed; }
+
+  .erro-msg { color:var(--erro); font-size:13px; text-align:center; margin-top:12px; display:none; }
+  .spinner { display:none; text-align:center; margin-top:16px; font-size:13px; color:var(--cinza); }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="brand"><div class="brand-name">REVIZI</div></div>
+
+  <div class="eyebrow">Pagamento</div>
+  <div class="h1">Finalize sua contratação</div>
+
+  <div class="resumo">
+    <span class="resumo-produto" id="resumoProduto">Sonda — Diagnóstico Prescritivo Completo</span>
+    <span class="resumo-valor" id="resumoValor">R$ 1.500</span>
+  </div>
+
+  <form id="formPagamento">
+    <div class="campo"><label>Nome</label><input type="text" id="nome" required></div>
+    <div class="campo"><label>Empresa</label><input type="text" id="empresa" required></div>
+    <div class="campo"><label>E-mail</label><input type="email" id="email" required></div>
+    <div class="campo"><label>WhatsApp</label><input type="tel" id="whatsapp" required></div>
+
+    <button type="submit" class="btn-pagar" id="btnPagar">Ir para pagamento seguro →</button>
+    <p class="spinner" id="spinner">Preparando checkout seguro...</p>
+    <p class="erro-msg" id="erroMsg">Não foi possível iniciar o pagamento. Tente novamente ou fale conosco pelo WhatsApp.</p>
+  </form>
+
+</div>
+
+<script src="/parcerias-config.js"></script>
+<script>
+  const PRECO_BASE = 1500;
+  const PRODUTO_NOME = 'Sonda — Diagnóstico Prescritivo Completo';
+  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyhWdimekbaK2spCF2CfdYsyd8iVJKQSExgwM-wyk1jA14GV55-P4w9P2IppdM2NQzJtw/exec';
+  const TOKEN_ESCRITA = 'Revizi-Escrita-2026'; // MESMO valor de TOKEN_ESCRITA no Apps Script
+
+  const PARCERIAS_LOCAL = window.PARCERIAS || {};
+  const params = new URLSearchParams(window.location.search);
+  const codigoParceria = params.get('parceria');
+  const parceria = codigoParceria ? PARCERIAS_LOCAL[codigoParceria] : null;
+
+  let valorFinal = PRECO_BASE;
+  if (parceria) {
+    valorFinal = PRECO_BASE * (1 - parceria.desconto / 100);
+    document.getElementById('resumoValor').textContent = 'R$ ' + valorFinal.toFixed(2).replace('.', ',');
+  }
+
+  document.getElementById('formPagamento').addEventListener('submit', async function(ev) {
+    ev.preventDefault();
+    const btn = document.getElementById('btnPagar');
+    const spinner = document.getElementById('spinner');
+    const erroMsg = document.getElementById('erroMsg');
+
+    btn.disabled = true;
+    spinner.style.display = 'block';
+    erroMsg.style.display = 'none';
+
+    const dados = {
+      token: TOKEN_ESCRITA,
+      acao: 'criarCheckoutSumUp',
+      produto: PRODUTO_NOME,
+      valor: valorFinal,
+      nome: document.getElementById('nome').value,
+      empresa: document.getElementById('empresa').value,
+      email: document.getElementById('email').value,
+      whatsapp: document.getElementById('whatsapp').value,
+      entidadeParceira: codigoParceria || '',
+      redirectUrl: window.location.origin + '/solucoes/sonda/pagamento-confirmado.html',
+    };
+
+    try {
+      const resposta = await fetch(APPS_SCRIPT_URL, {
+        method: 'POST',
+        body: JSON.stringify(dados),
+      });
+      const resultado = await resposta.json();
+
+      if (resultado.status === 'ok' && resultado.hostedCheckoutUrl) {
+        window.location.href = resultado.hostedCheckoutUrl;
+      } else {
+        throw new Error(resultado.mensagem || 'Resposta inesperada');
+      }
+    } catch (erro) {
+      console.error('Falha ao criar checkout:', erro);
+      btn.disabled = false;
+      spinner.style.display = 'none';
+      erroMsg.style.display = 'block';
+    }
+  });
+</script>
+</body>
+</html>
