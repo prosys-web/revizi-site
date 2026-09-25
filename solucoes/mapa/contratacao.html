@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mapa — Contratação | REVIZI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root { --roxo:#5415A3; --lilas:#A863FF; --dourado:#C89B4A; --bg1:#090414; --bg2:#150D27; --cinza:#CCCCCC; --branco:#FFFFFF; --erro:#D9534F; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--bg1); color:var(--branco); font-family:'Inter',sans-serif; line-height:1.6; }
+  .wrap { max-width:640px; margin:0 auto; padding:44px 26px 60px; }
+
+  .brand { text-align:center; margin-bottom:30px; }
+  .brand-name { font-family:'Cormorant Garamond',serif; font-weight:700; font-size:22px; color:var(--dourado); }
+
+  .eyebrow { font-size:12px; color:var(--lilas); font-weight:700; letter-spacing:2px; text-transform:uppercase; text-align:center; margin-bottom:10px; }
+  .h1 { font-family:'Cormorant Garamond',serif; font-size:28px; font-weight:700; text-align:center; margin-bottom:8px; }
+  .intro { font-size:14px; color:var(--cinza); text-align:center; max-width:460px; margin:0 auto 32px; }
+
+  .oferta-loading { text-align:center; padding:20px; font-size:13.5px; color:var(--cinza); }
+
+  .resumo-box { background:var(--bg2); border-radius:14px; padding:24px 22px; margin-bottom:24px; display:none; }
+  .resumo-titulo { font-size:11px; color:var(--lilas); font-weight:700; letter-spacing:1.5px; text-transform:uppercase; margin-bottom:14px; }
+  .resumo-linha { display:flex; justify-content:space-between; align-items:baseline; padding:9px 0; border-bottom:1px solid rgba(255,255,255,0.08); font-size:14px; }
+  .resumo-linha:last-child { border-bottom:none; }
+  .resumo-linha.total { margin-top:6px; padding-top:14px; border-top:1px solid rgba(200,155,74,0.3); font-size:16px; }
+  .resumo-linha .label { color:var(--cinza); }
+  .resumo-linha.total .label { color:var(--branco); font-weight:600; }
+  .resumo-linha .valor { font-weight:600; }
+  .resumo-linha.total .valor { font-family:'Cormorant Garamond',serif; font-size:26px; color:var(--dourado); font-weight:700; }
+  .resumo-linha .valor.beneficio { color:var(--lilas); }
+  .campanha-selo { display:inline-block; background:rgba(168,99,255,0.12); border:1px solid var(--lilas); color:var(--lilas); font-size:11px; font-weight:700; padding:4px 12px; border-radius:20px; margin-top:6px; }
+
+  .campanha-aviso { background:rgba(200,155,74,0.08); border:1px solid var(--dourado); border-radius:12px; padding:16px 18px; margin-bottom:20px; font-size:13px; color:var(--cinza); display:none; }
+  .campanha-aviso strong { color:var(--dourado); display:block; margin-bottom:4px; font-size:13.5px; }
+
+  .erro-oferta { background:rgba(217,83,79,0.08); border:1px solid var(--erro); border-radius:12px; padding:16px 18px; margin-bottom:20px; font-size:13px; color:var(--cinza); display:none; }
+  .erro-oferta strong { color:var(--erro); display:block; margin-bottom:4px; }
+
+  .box { background:var(--bg2); border-radius:14px; padding:22px; margin-bottom:20px; display:none; }
+  .box-titulo { font-family:'Cormorant Garamond',serif; font-size:16px; color:var(--dourado); margin-bottom:12px; font-weight:700; }
+  .box ol { padding-left:20px; }
+  .box li { font-size:13px; color:var(--cinza); margin-bottom:7px; line-height:1.55; }
+
+  .form-area { display:none; }
+  .campo { margin-bottom:16px; }
+  .campo label { display:block; font-size:12.5px; color:var(--cinza); margin-bottom:6px; }
+  .campo label .opcional { opacity:0.6; font-weight:400; }
+  .campo input { width:100%; background:var(--bg2); border:1px solid rgba(255,255,255,0.1); border-radius:8px; padding:12px 14px; color:var(--branco); font-size:14px; }
+  .campo input:focus { outline:none; border-color:var(--lilas); }
+  .campo input:invalid:not(:placeholder-shown) { border-color:var(--erro); }
+
+  .aceite-row { display:flex; align-items:flex-start; gap:10px; margin:22px 0; padding:16px; background:var(--bg2); border-radius:10px; }
+  .aceite-row input { margin-top:3px; width:16px; height:16px; flex-shrink:0; }
+  .aceite-row label { font-size:13px; color:var(--branco); cursor:pointer; }
+  .aceite-row a { color:var(--dourado); text-decoration:underline; }
+
+  .btn-continuar { display:block; width:100%; background:var(--roxo); color:var(--branco); font-weight:700; font-size:15px; padding:16px; border:none; border-radius:10px; cursor:pointer; opacity:0.5; transition:opacity .2s; }
+  .btn-continuar.ativo { opacity:1; }
+  .btn-continuar:disabled { cursor:not-allowed; }
+
+  .aviso-pagamento { text-align:center; margin-top:14px; font-size:12px; color:var(--cinza); }
+  .spinner-envio { display:none; text-align:center; margin-top:14px; font-size:13px; color:var(--cinza); }
+  .erro-envio { display:none; text-align:center; margin-top:14px; font-size:13px; color:var(--erro); }
+
+  .voltar-link { display:block; text-align:center; margin-top:18px; font-size:13px; color:var(--cinza); text-decoration:underline; }
+
+  .condicoes-toggle { font-size:12.5px; color:var(--cinza); text-decoration:underline; cursor:pointer; display:inline-block; margin-bottom:16px; background:none; border:none; padding:0; }
+  .condicoes-texto { display:none; background:var(--bg1); border:1px solid rgba(200,155,74,0.25); border-radius:10px; padding:16px 18px; font-size:12px; color:var(--cinza); margin-bottom:16px; line-height:1.6; }
+  .condicoes-texto.aberto { display:block; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="brand"><div class="brand-name">REVIZI</div></div>
+
+  <div class="eyebrow">Contratação</div>
+  <h1 class="h1">Você está iniciando seu Mapa</h1>
+  <p class="intro">Mapa REVIZI — observação estruturada com até 3 respondentes independentes para identificar convergências, divergências e assimetrias nas seis dimensões da metodologia REVIZI.</p>
+
+  <p class="oferta-loading" id="ofertaLoading">Verificando sua condição...</p>
+
+  <div class="erro-oferta" id="erroOferta">
+    <strong>Não foi possível verificar sua condição agora.</strong>
+    Você ainda pode continuar pelo valor oficial, ou tentar novamente em instantes.
+  </div>
+
+  <div class="campanha-aviso" id="campanhaAviso">
+    <strong>Esta condição especial não está disponível no momento.</strong>
+    Você ainda pode contratar o Mapa pelo valor oficial.
+  </div>
+
+  <div class="resumo-box" id="resumoBox">
+    <div class="resumo-titulo">Resumo da contratação</div>
+    <div class="resumo-linha"><span class="label">Produto</span><span class="valor">Mapa REVIZI</span></div>
+    <div class="resumo-linha" id="linhaValorOficial"><span class="label">Valor oficial</span><span class="valor" id="valorOficial">R$ 350,00</span></div>
+    <div class="resumo-linha" id="linhaBeneficio" style="display:none;"><span class="label" id="labelBeneficio">Benefício</span><span class="valor beneficio" id="valorBeneficio">−0%</span></div>
+    <div class="resumo-linha total"><span class="label">Total</span><span class="valor" id="valorTotal">R$ 350,00</span></div>
+    <div id="campanhaSeloArea"></div>
+  </div>
+
+  <div class="box" id="depoisBox">
+    <div class="box-titulo">Depois da confirmação do pagamento</div>
+    <ol>
+      <li>Seu pagamento será confirmado</li>
+      <li>Você recebe por e-mail o acesso à Central do Caso</li>
+      <li>Na Central, você copia os links individuais dos respondentes</li>
+      <li>Cada respondente preenche de forma independente</li>
+      <li>Após o mínimo de respondentes, a REVIZI consolida e entrega o relatório</li>
+    </ol>
+  </div>
+
+  <div class="form-area" id="formArea">
+    <form id="formContratacao">
+      <div class="campo"><label>Nome</label><input type="text" id="nome" required></div>
+      <div class="campo"><label>Empresa <span class="opcional">(opcional)</span></label><input type="text" id="empresa"></div>
+      <div class="campo"><label>E-mail</label><input type="email" id="email" required></div>
+      <div class="campo"><label>WhatsApp</label><input type="tel" id="whatsapp" required></div>
+
+      <button type="button" class="condicoes-toggle" id="toggleCondicoes">Ver condições</button>
+      <div class="condicoes-texto" id="condicoesTexto">
+        <p><strong>Pendente de validação jurídica formal.</strong> Resumo provisório: o Mapa é uma observação estruturada com múltiplos respondentes, destinada a identificar convergências, divergências, assimetrias e pontos que possam exigir aprofundamento. Não confirma causalidade, não constitui diagnóstico completo e não produz Prescrição. O acesso à Central do Caso é liberado após a confirmação do pagamento. Cancelamentos e dúvidas podem ser tratados diretamente pelo WhatsApp da REVIZI.</p>
+      </div>
+
+      <div class="aceite-row">
+        <input type="checkbox" id="aceite">
+        <label for="aceite">Li e concordo com as condições do Mapa REVIZI e estou ciente de que o acesso à Central do Caso será liberado após a confirmação do pagamento.</label>
+      </div>
+
+      <button type="submit" class="btn-continuar" id="btnContinuar" disabled>Contratação temporariamente indisponível</button>
+      <p class="spinner-envio" id="spinnerEnvio">Preparando checkout seguro...</p>
+      <p class="erro-envio" id="erroEnvio">Não foi possível iniciar o pagamento. Tente novamente ou fale conosco pelo WhatsApp.</p>
+      <p class="aviso-pagamento">Pagamento processado com segurança pela SumUp.</p>
+    </form>
+    <a href="index.html" class="voltar-link">← Voltar para a página do Mapa</a>
+  </div>
+
+</div>
+
+<script>
+  // ===== Camada 3 — Contratação/Oferta do Mapa (mesmo padrão validado no Scan) =====
+  // O preço exibido aqui vem SEMPRE do backend (acao=validarOferta). Nada de desconto
+  // calculado no front-end — se a URL vier com ?campanha=algo, isso é só um identificador
+  // repassado ao servidor; quem decide se é válido e qual o preço final é o Apps Script.
+  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyhWdimekbaK2spCF2CfdYsyd8iVJKQSExgwM-wyk1jA14GV55-P4w9P2IppdM2NQzJtw/exec';
+  const LEGAL_LIBERADO = false; // Alterar somente após aprovação jurídica/comercial formal.
+  // Nenhum segredo/token neste arquivo. A ação pública "iniciarContratacaoMapa" no
+  // Apps Script não exige TOKEN_ESCRITA — ela mesma fixa produto e recalcula o preço
+  // no servidor, então não há nada de sensível para proteger com um segredo aqui.
+
+  const params = new URLSearchParams(window.location.search);
+  const codigoCampanha = params.get('campanha') || '';
+
+  let ofertaValidada = null;
+
+  function formatarMoeda(v) {
+    return 'R$ ' + Number(v).toFixed(2).replace('.', ',');
+  }
+
+  function mostrarOfertaPublica(precoBase) {
+    document.getElementById('linhaBeneficio').style.display = 'none';
+    document.getElementById('valorOficial').textContent = formatarMoeda(precoBase);
+    document.getElementById('valorTotal').textContent = formatarMoeda(precoBase);
+  }
+
+  function mostrarOfertaComCampanha(oferta) {
+    const descontoPercentual = oferta.precoBase
+      ? Math.round((1 - (oferta.precoFinal / oferta.precoBase)) * 100)
+      : 0;
+    document.getElementById('linhaBeneficio').style.display = 'flex';
+    document.getElementById('labelBeneficio').textContent = 'Benefício ' + oferta.campanhaNome;
+    document.getElementById('valorBeneficio').textContent = '−' + descontoPercentual + '%';
+    document.getElementById('valorOficial').textContent = formatarMoeda(oferta.precoBase);
+    document.getElementById('valorTotal').textContent = formatarMoeda(oferta.precoFinal);
+    document.getElementById('campanhaSeloArea').innerHTML =
+      '<span class="campanha-selo">Condição ' + oferta.campanhaNome + '</span>';
+  }
+
+  async function carregarOferta() {
+    const loadingEl = document.getElementById('ofertaLoading');
+    const erroEl = document.getElementById('erroOferta');
+    const avisoEl = document.getElementById('campanhaAviso');
+    try {
+      const url = APPS_SCRIPT_URL + '?acao=validarOferta&produto=mapa' +
+        (codigoCampanha ? '&campanha=' + encodeURIComponent(codigoCampanha) : '');
+      const resposta = await fetch(url);
+      const resultado = await resposta.json();
+
+      if (!resultado.sucesso) throw new Error(resultado.mensagem || 'Resposta inesperada');
+
+      ofertaValidada = resultado;
+
+      if (resultado.campanhaAplicada) {
+        mostrarOfertaComCampanha(resultado);
+      } else {
+        mostrarOfertaPublica(resultado.precoBase);
+        if (codigoCampanha) avisoEl.style.display = 'block';
+      }
+
+      loadingEl.style.display = 'none';
+      document.getElementById('resumoBox').style.display = 'block';
+      document.getElementById('depoisBox').style.display = 'block';
+      document.getElementById('formArea').style.display = 'block';
+    } catch (erro) {
+      console.error('Falha ao validar oferta:', erro);
+      loadingEl.style.display = 'none';
+      erroEl.style.display = 'block';
+    }
+  }
+
+  document.getElementById('toggleCondicoes').addEventListener('click', function() {
+    document.getElementById('condicoesTexto').classList.toggle('aberto');
+  });
+
+  const checkbox = document.getElementById('aceite');
+  const btn = document.getElementById('btnContinuar');
+  checkbox.addEventListener('change', () => {
+    btn.disabled = !checkbox.checked;
+    btn.classList.toggle('ativo', checkbox.checked);
+  });
+
+  document.getElementById('formContratacao').addEventListener('submit', async function(ev) {
+    ev.preventDefault();
+    if (!LEGAL_LIBERADO) {
+      alert('A contratação do Mapa está temporariamente indisponível enquanto finalizamos as condições contratuais.');
+      return;
+    }
+    if (!checkbox.checked || !ofertaValidada) return;
+
+    const btnEl = document.getElementById('btnContinuar');
+    const spinnerEl = document.getElementById('spinnerEnvio');
+    const erroEl = document.getElementById('erroEnvio');
+    btnEl.disabled = true;
+    spinnerEl.style.display = 'block';
+    erroEl.style.display = 'none';
+
+    // Enviamos SÓ identificação + o slug da campanha (se houver) + o aceite.
+    // Nada de produto, valor, desconto ou entidade parceira aqui — o servidor
+    // fixa o produto (Mapa) e recalcula a oferta do zero (VALIDAÇÃO 2).
+    const dados = {
+      acao: 'iniciarContratacaoMapa',
+      nome: document.getElementById('nome').value,
+      empresa: document.getElementById('empresa').value,
+      email: document.getElementById('email').value,
+      whatsapp: document.getElementById('whatsapp').value,
+      campanha: codigoCampanha,
+      aceite: checkbox.checked,
+    };
+
+    try {
+      const resposta = await fetch(APPS_SCRIPT_URL, { method: 'POST', body: JSON.stringify(dados) });
+      const resultado = await resposta.json();
+      if (resultado.status === 'ok' && resultado.hostedCheckoutUrl) {
+        window.location.href = resultado.hostedCheckoutUrl;
+      } else {
+        throw new Error(resultado.mensagem || 'Resposta inesperada');
+      }
+    } catch (erro) {
+      console.error('Falha ao criar checkout:', erro);
+      btnEl.disabled = false;
+      spinnerEl.style.display = 'none';
+      erroEl.style.display = 'block';
+    }
+  });
+
+  carregarOferta();
+</script>
+</body>
+</html>
