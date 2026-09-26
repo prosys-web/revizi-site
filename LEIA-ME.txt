@@ -1,0 +1,28 @@
+REVIZI — BLOCO ÚNICO DE SANEAMENTO
+
+SUBSTITUIR NO GIT:
+- /index.html
+- /ir-instagram.html
+- /solucoes/scan/contratacao.html
+- /solucoes/mapa/contratacao.html
+- /solucoes/mapa/central-do-caso.html
+- /solucoes/sonda/contratacao.html
+- /solucoes/consultoria/consultoria-formulario.html
+
+EXCLUIR: ver EXCLUIR_DO_GIT.txt
+
+APPS SCRIPT:
+- substituir o arquivo de produção pelo apps-script-revizi-consolidado.gs
+- configurar Script Properties conforme CONFIGURAR_APPS_SCRIPT.txt
+- publicar NOVA VERSÃO do deployment
+
+NÃO ALTERAR:
+- /css/style.css
+- /js/script.js
+- páginas index de Scan/Mapa/Sonda/Consultoria já homologadas
+- formulários /scan/formulario.html, /mapa/formulario.html, /sonda/formulario.html
+- páginas pagamento-confirmado.html
+
+GATES:
+Os três arquivos de contratação permanecem com LEGAL_LIBERADO=false.
+Somente após autorização formal, alterar para true nas páginas dos produtos liberados.
