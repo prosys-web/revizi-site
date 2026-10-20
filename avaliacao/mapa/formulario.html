@@ -1,0 +1,86 @@
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MAPA — Formulário Demo | REVIZI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"><style>
+:root{--roxo:#5415A3;--lilas:#A863FF;--dourado:#C89B4A;--bg1:#090414;--bg2:#150D27;--cinza:#CCCCCC;--branco:#FFFFFF;--verde:#4caf7d}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg1);color:var(--branco);font-family:Inter,Arial,sans-serif}
+a{color:inherit}.wrap{max-width:980px;margin:auto;padding:34px 22px 70px}.brand{text-align:center;font:700 28px 'Cormorant Garamond',serif;color:var(--dourado)}
+.tag{text-align:center;color:var(--lilas);font-size:10px;letter-spacing:2px;text-transform:uppercase;margin:3px 0 24px}
+.demo-banner{background:rgba(168,99,255,.08);border:1px solid rgba(168,99,255,.28);border-radius:12px;padding:12px 16px;color:var(--cinza);font-size:12px;line-height:1.55;margin-bottom:22px}
+.hero{text-align:center;padding:34px 0 25px}.eyebrow{color:var(--lilas);font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase}
+h1,h2,h3{font-family:'Cormorant Garamond',serif}h1{font-size:48px;margin:8px 0 12px;color:var(--branco)}h2{font-size:31px;margin:8px 0 10px;color:var(--dourado)}
+.lead{color:var(--cinza);max-width:680px;margin:0 auto;line-height:1.65}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.card{background:var(--bg2);border:1px solid rgba(200,155,74,.22);border-radius:16px;padding:24px}.card p{color:var(--cinza);line-height:1.55}
+.btn{display:inline-block;border:0;border-radius:10px;padding:13px 20px;background:var(--roxo);color:#fff;text-decoration:none;font-weight:700;cursor:pointer}
+.btn.alt{background:transparent;border:1px solid rgba(200,155,74,.55);color:var(--dourado)}.btnrow{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:22px}
+.price{font:700 38px 'Cormorant Garamond';color:var(--dourado)}.muted{color:var(--cinza)}.small{font-size:12px}.section{padding:30px 0}
+.progress{height:6px;background:var(--bg2);border-radius:6px;overflow:hidden}.progress>div{height:100%;background:linear-gradient(90deg,var(--roxo),var(--dourado))}
+.plabel{text-align:center;color:var(--cinza);font-size:11px;margin:7px 0 20px}.step{display:none}.step.active{display:block}
+.question{font:600 23px 'Cormorant Garamond';line-height:1.3;margin:8px 0 18px}.option{display:block;background:var(--bg1);border:1px solid rgba(255,255,255,.11);padding:14px;border-radius:11px;margin:9px 0;cursor:pointer}
+.option:has(input:checked){border-color:var(--dourado);background:rgba(200,155,74,.08)}.option input{margin-right:9px}.field{margin:13px 0}.field label{display:block;color:var(--dourado);font-size:12px;margin-bottom:6px}
+.field input,.field textarea{width:100%;background:var(--bg1);border:1px solid rgba(255,255,255,.14);border-radius:9px;padding:12px;color:white;font-family:Inter}
+.nav{display:flex;justify-content:space-between;gap:12px;margin-top:20px}.error{color:#ff938f;font-size:12px;margin-top:10px}
+.score{text-align:center;background:var(--bg2);border-radius:16px;padding:25px;margin:18px 0}.score b{font:700 54px 'Cormorant Garamond';color:var(--dourado)}
+.rrow{display:grid;grid-template-columns:170px 1fr 35px;gap:10px;align-items:center;margin:11px 0;font-size:12px}.bar{height:8px;background:#090414;border-radius:5px;overflow:hidden}.fill{height:100%;background:linear-gradient(90deg,var(--roxo),var(--lilas))}
+.statuspill{display:inline-block;border:1px solid rgba(76,175,125,.4);color:#8fd7ad;background:rgba(76,175,125,.08);padding:5px 9px;border-radius:20px;font-size:11px}
+.warnpill{display:inline-block;border:1px solid rgba(200,155,74,.45);color:var(--dourado);background:rgba(200,155,74,.07);padding:5px 9px;border-radius:20px;font-size:11px}
+table{width:100%;border-collapse:collapse}th,td{padding:12px 10px;border-bottom:1px solid rgba(255,255,255,.08);text-align:left;font-size:12px}th{color:var(--dourado);font-weight:700}
+footer{text-align:center;color:#8f889a;font-size:11px;padding:35px 0 10px}
+@media(max-width:720px){.grid,.grid3{grid-template-columns:1fr}h1{font-size:38px}.rrow{grid-template-columns:120px 1fr 30px}}
+</style></head>
+<body><main class="wrap"><div class="brand">REVIZI — MAPA</div><div class="tag">Respondente demonstrativo</div><div class="demo-banner"><strong>Regra preservada:</strong> cada respondente responde de forma independente. Nenhum dado desta demonstração é enviado ao servidor.</div>
+<div id="app"><div class="progress"><div id="progress"></div></div><div class="plabel" id="plabel"></div><form id="form">
+<div class="step active"><div class="card"><div class="eyebrow">Identificação</div><div class="question">Antes de começar, quem está respondendo?</div><div class="field"><label>Nome</label><input name="nome" value="Fernando Consentino"></div><div class="field"><label>Função</label><input name="funcao" value="Estrategista / Coletiva Web"></div><div class="field"><label>Empresa</label><input name="empresa" value="Coletiva Web"></div></div></div>
+<div class="step"><div class="card"><div class="eyebrow">D1 · Estrutura de Oferta</div><div class="question">Pode mostrar o material comercial atual da empresa?</div>
+<label class="option"><input type="radio" name="q1" value="0">0 — Ausente, informal ou não estruturado.</label>
+<label class="option"><input type="radio" name="q1" value="5">5 — Existe parcialmente, com inconsistências.</label>
+<label class="option"><input type="radio" name="q1" value="10">10 — Estruturado, atual e utilizado de forma consistente.</label>
+<div class="field"><label>Evidência / observação (opcional na demonstração)</label><textarea name="e1" placeholder="Documento, print, link ou observação..."></textarea></div></div></div><div class="step"><div class="card"><div class="eyebrow">D1 · Estrutura de Oferta</div><div class="question">Como é definida a precificação e as condições comerciais?</div>
+<label class="option"><input type="radio" name="q2" value="0">0 — Ausente, informal ou não estruturado.</label>
+<label class="option"><input type="radio" name="q2" value="5">5 — Existe parcialmente, com inconsistências.</label>
+<label class="option"><input type="radio" name="q2" value="10">10 — Estruturado, atual e utilizado de forma consistente.</label>
+<div class="field"><label>Evidência / observação (opcional na demonstração)</label><textarea name="e2" placeholder="Documento, print, link ou observação..."></textarea></div></div></div><div class="step"><div class="card"><div class="eyebrow">D2 · Tração Comercial</div><div class="question">Como a empresa capta novos clientes hoje?</div>
+<label class="option"><input type="radio" name="q3" value="0">0 — Ausente, informal ou não estruturado.</label>
+<label class="option"><input type="radio" name="q3" value="5">5 — Existe parcialmente, com inconsistências.</label>
+<label class="option"><input type="radio" name="q3" value="10">10 — Estruturado, atual e utilizado de forma consistente.</label>
+<div class="field"><label>Evidência / observação (opcional na demonstração)</label><textarea name="e3" placeholder="Documento, print, link ou observação..."></textarea></div></div></div><div class="step"><div class="card"><div class="eyebrow">D2 · Tração Comercial</div><div class="question">Como é feita a gestão de follow-up com clientes em negociação?</div>
+<label class="option"><input type="radio" name="q4" value="0">0 — Ausente, informal ou não estruturado.</label>
+<label class="option"><input type="radio" name="q4" value="5">5 — Existe parcialmente, com inconsistências.</label>
+<label class="option"><input type="radio" name="q4" value="10">10 — Estruturado, atual e utilizado de forma consistente.</label>
+<div class="field"><label>Evidência / observação (opcional na demonstração)</label><textarea name="e4" placeholder="Documento, print, link ou observação..."></textarea></div></div></div><div class="step"><div class="card"><div class="eyebrow">D3 · Governança de Decisão</div><div class="question">Quais indicadores a diretoria utiliza para acompanhar o negócio?</div>
+<label class="option"><input type="radio" name="q5" value="0">0 — Ausente, informal ou não estruturado.</label>
+<label class="option"><input type="radio" name="q5" value="5">5 — Existe parcialmente, com inconsistências.</label>
+<label class="option"><input type="radio" name="q5" value="10">10 — Estruturado, atual e utilizado de forma consistente.</label>
+<div class="field"><label>Evidência / observação (opcional na demonstração)</label><textarea name="e5" placeholder="Documento, print, link ou observação..."></textarea></div></div></div><div class="step"><div class="card"><div class="eyebrow">D3 · Governança de Decisão</div><div class="question">Qual o grau de dependência da venda em relação ao dono da empresa?</div>
+<label class="option"><input type="radio" name="q6" value="0">0 — Ausente, informal ou não estruturado.</label>
+<label class="option"><input type="radio" name="q6" value="5">5 — Existe parcialmente, com inconsistências.</label>
+<label class="option"><input type="radio" name="q6" value="10">10 — Estruturado, atual e utilizado de forma consistente.</label>
+<div class="field"><label>Evidência / observação (opcional na demonstração)</label><textarea name="e6" placeholder="Documento, print, link ou observação..."></textarea></div></div></div><div class="step"><div class="card"><div class="eyebrow">D4 · Presença Digital</div><div class="question">Qual o estado da presença institucional digital da empresa?</div>
+<label class="option"><input type="radio" name="q7" value="0">0 — Ausente, informal ou não estruturado.</label>
+<label class="option"><input type="radio" name="q7" value="5">5 — Existe parcialmente, com inconsistências.</label>
+<label class="option"><input type="radio" name="q7" value="10">10 — Estruturado, atual e utilizado de forma consistente.</label>
+<div class="field"><label>Evidência / observação (opcional na demonstração)</label><textarea name="e7" placeholder="Documento, print, link ou observação..."></textarea></div></div></div><div class="step"><div class="card"><div class="eyebrow">D4 · Presença Digital</div><div class="question">As plataformas digitais têm mecanismo estruturado de captura de contato?</div>
+<label class="option"><input type="radio" name="q8" value="0">0 — Ausente, informal ou não estruturado.</label>
+<label class="option"><input type="radio" name="q8" value="5">5 — Existe parcialmente, com inconsistências.</label>
+<label class="option"><input type="radio" name="q8" value="10">10 — Estruturado, atual e utilizado de forma consistente.</label>
+<div class="field"><label>Evidência / observação (opcional na demonstração)</label><textarea name="e8" placeholder="Documento, print, link ou observação..."></textarea></div></div></div><div class="step"><div class="card"><div class="eyebrow">D5 · Capacidade de Conversão</div><div class="question">Onde e como é feita a gestão das oportunidades em andamento?</div>
+<label class="option"><input type="radio" name="q9" value="0">0 — Ausente, informal ou não estruturado.</label>
+<label class="option"><input type="radio" name="q9" value="5">5 — Existe parcialmente, com inconsistências.</label>
+<label class="option"><input type="radio" name="q9" value="10">10 — Estruturado, atual e utilizado de forma consistente.</label>
+<div class="field"><label>Evidência / observação (opcional na demonstração)</label><textarea name="e9" placeholder="Documento, print, link ou observação..."></textarea></div></div></div><div class="step"><div class="card"><div class="eyebrow">D5 · Capacidade de Conversão</div><div class="question">Como é estruturado o atendimento comercial via WhatsApp/mensagens?</div>
+<label class="option"><input type="radio" name="q10" value="0">0 — Ausente, informal ou não estruturado.</label>
+<label class="option"><input type="radio" name="q10" value="5">5 — Existe parcialmente, com inconsistências.</label>
+<label class="option"><input type="radio" name="q10" value="10">10 — Estruturado, atual e utilizado de forma consistente.</label>
+<div class="field"><label>Evidência / observação (opcional na demonstração)</label><textarea name="e10" placeholder="Documento, print, link ou observação..."></textarea></div></div></div><div class="step"><div class="card"><div class="eyebrow">D6 · Maturidade de Dado</div><div class="question">Você consegue extrair hoje um relatório de vendas/clientes por canal?</div>
+<label class="option"><input type="radio" name="q11" value="0">0 — Ausente, informal ou não estruturado.</label>
+<label class="option"><input type="radio" name="q11" value="5">5 — Existe parcialmente, com inconsistências.</label>
+<label class="option"><input type="radio" name="q11" value="10">10 — Estruturado, atual e utilizado de forma consistente.</label>
+<div class="field"><label>Evidência / observação (opcional na demonstração)</label><textarea name="e11" placeholder="Documento, print, link ou observação..."></textarea></div></div></div><div class="step"><div class="card"><div class="eyebrow">D6 · Maturidade de Dado</div><div class="question">O que está registrado no sistema bate com o que os responsáveis relatam de memória?</div>
+<label class="option"><input type="radio" name="q12" value="0">0 — Ausente, informal ou não estruturado.</label>
+<label class="option"><input type="radio" name="q12" value="5">5 — Existe parcialmente, com inconsistências.</label>
+<label class="option"><input type="radio" name="q12" value="10">10 — Estruturado, atual e utilizado de forma consistente.</label>
+<div class="field"><label>Evidência / observação (opcional na demonstração)</label><textarea name="e12" placeholder="Documento, print, link ou observação..."></textarea></div></div></div>
+<div class="nav"><button class="btn alt" type="button" id="prev">← Voltar</button><button class="btn" type="button" id="next">Avançar →</button></div><div class="error" id="err"></div></form></div>
+<div id="done" style="display:none"><section class="hero"><div class="eyebrow">Demonstração concluída</div><h1>Resposta local registrada</h1><p class="lead">Na operação real, esta resposta seria vinculada a um caso ativo e aguardaria os demais respondentes. Aqui, nada foi enviado ou persistido.</p></section><div class="btnrow"><a class="btn" href="central-do-caso.html">Abrir Central do Caso demonstrativa</a><a class="btn alt" href="./">Voltar ao MAPA</a></div></div>
+</main><script>
+const steps=[...document.querySelectorAll('.step')];let step=0;function render(){steps.forEach((s,i)=>s.classList.toggle('active',i===step));progress.style.width=((step+1)/steps.length*100)+'%';plabel.textContent='Etapa '+(step+1)+' de '+steps.length;prev.style.visibility=step?'visible':'hidden';next.textContent=step===steps.length-1?'Concluir demonstração →':'Avançar →';err.textContent=''}
+function valid(){if(step===0)return true;return !!document.querySelector('input[name=q'+step+']:checked')}prev.onclick=()=>{if(step>0){step--;render()}};next.onclick=()=>{if(!valid()){err.textContent='Escolha uma opção para continuar.';return}if(step<steps.length-1){step++;render()}else{sessionStorage.setItem('reviziMapaDemo','respondido');app.style.display='none';done.style.display='block'}};render();
+</script></body></html>
