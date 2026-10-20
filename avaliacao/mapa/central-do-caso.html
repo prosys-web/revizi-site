@@ -1,0 +1,39 @@
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MAPA — Central do Caso Demo | REVIZI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"><style>
+:root{--roxo:#5415A3;--lilas:#A863FF;--dourado:#C89B4A;--bg1:#090414;--bg2:#150D27;--cinza:#CCCCCC;--branco:#FFFFFF;--verde:#4caf7d}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg1);color:var(--branco);font-family:Inter,Arial,sans-serif}
+a{color:inherit}.wrap{max-width:980px;margin:auto;padding:34px 22px 70px}.brand{text-align:center;font:700 28px 'Cormorant Garamond',serif;color:var(--dourado)}
+.tag{text-align:center;color:var(--lilas);font-size:10px;letter-spacing:2px;text-transform:uppercase;margin:3px 0 24px}
+.demo-banner{background:rgba(168,99,255,.08);border:1px solid rgba(168,99,255,.28);border-radius:12px;padding:12px 16px;color:var(--cinza);font-size:12px;line-height:1.55;margin-bottom:22px}
+.hero{text-align:center;padding:34px 0 25px}.eyebrow{color:var(--lilas);font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase}
+h1,h2,h3{font-family:'Cormorant Garamond',serif}h1{font-size:48px;margin:8px 0 12px;color:var(--branco)}h2{font-size:31px;margin:8px 0 10px;color:var(--dourado)}
+.lead{color:var(--cinza);max-width:680px;margin:0 auto;line-height:1.65}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.card{background:var(--bg2);border:1px solid rgba(200,155,74,.22);border-radius:16px;padding:24px}.card p{color:var(--cinza);line-height:1.55}
+.btn{display:inline-block;border:0;border-radius:10px;padding:13px 20px;background:var(--roxo);color:#fff;text-decoration:none;font-weight:700;cursor:pointer}
+.btn.alt{background:transparent;border:1px solid rgba(200,155,74,.55);color:var(--dourado)}.btnrow{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:22px}
+.price{font:700 38px 'Cormorant Garamond';color:var(--dourado)}.muted{color:var(--cinza)}.small{font-size:12px}.section{padding:30px 0}
+.progress{height:6px;background:var(--bg2);border-radius:6px;overflow:hidden}.progress>div{height:100%;background:linear-gradient(90deg,var(--roxo),var(--dourado))}
+.plabel{text-align:center;color:var(--cinza);font-size:11px;margin:7px 0 20px}.step{display:none}.step.active{display:block}
+.question{font:600 23px 'Cormorant Garamond';line-height:1.3;margin:8px 0 18px}.option{display:block;background:var(--bg1);border:1px solid rgba(255,255,255,.11);padding:14px;border-radius:11px;margin:9px 0;cursor:pointer}
+.option:has(input:checked){border-color:var(--dourado);background:rgba(200,155,74,.08)}.option input{margin-right:9px}.field{margin:13px 0}.field label{display:block;color:var(--dourado);font-size:12px;margin-bottom:6px}
+.field input,.field textarea{width:100%;background:var(--bg1);border:1px solid rgba(255,255,255,.14);border-radius:9px;padding:12px;color:white;font-family:Inter}
+.nav{display:flex;justify-content:space-between;gap:12px;margin-top:20px}.error{color:#ff938f;font-size:12px;margin-top:10px}
+.score{text-align:center;background:var(--bg2);border-radius:16px;padding:25px;margin:18px 0}.score b{font:700 54px 'Cormorant Garamond';color:var(--dourado)}
+.rrow{display:grid;grid-template-columns:170px 1fr 35px;gap:10px;align-items:center;margin:11px 0;font-size:12px}.bar{height:8px;background:#090414;border-radius:5px;overflow:hidden}.fill{height:100%;background:linear-gradient(90deg,var(--roxo),var(--lilas))}
+.statuspill{display:inline-block;border:1px solid rgba(76,175,125,.4);color:#8fd7ad;background:rgba(76,175,125,.08);padding:5px 9px;border-radius:20px;font-size:11px}
+.warnpill{display:inline-block;border:1px solid rgba(200,155,74,.45);color:var(--dourado);background:rgba(200,155,74,.07);padding:5px 9px;border-radius:20px;font-size:11px}
+table{width:100%;border-collapse:collapse}th,td{padding:12px 10px;border-bottom:1px solid rgba(255,255,255,.08);text-align:left;font-size:12px}th{color:var(--dourado);font-weight:700}
+footer{text-align:center;color:#8f889a;font-size:11px;padding:35px 0 10px}
+@media(max-width:720px){.grid,.grid3{grid-template-columns:1fr}h1{font-size:38px}.rrow{grid-template-columns:120px 1fr 30px}}
+</style></head>
+<body><main class="wrap"><div class="brand">REVIZI — MAPA</div><div class="tag">Central do Caso • demonstração</div><div class="demo-banner">Caso-modelo fictício. Nenhuma informação corresponde a cliente real e nenhum dado é consultado em backend produtivo.</div>
+<section class="hero"><div class="eyebrow">Caso DEMO-MAPA-001</div><h1>Central do Caso</h1><p class="lead">Exemplo da lógica de acompanhamento de respondentes e da leitura posterior de convergências e divergências.</p></section>
+<div class="card"><h2>Status dos respondentes</h2><table><thead><tr><th>Respondente</th><th>Função</th><th>Status</th></tr></thead><tbody>
+<tr><td>Respondente 1</td><td>Sócio-diretor</td><td><span class="statuspill">Concluído</span></td></tr>
+<tr><td>Respondente 2</td><td>Gestão comercial</td><td><span class="statuspill">Concluído</span></td></tr>
+<tr><td>Respondente 3</td><td>Operação</td><td><span class="warnpill">Pendente</span></td></tr>
+</tbody></table></div>
+<section class="section"><div class="grid"><div class="card"><div class="eyebrow">Convergências ilustrativas</div><h2>Pontos percebidos de forma semelhante</h2><p>• Presença digital existente, porém pouco integrada à captura.</p><p>• Follow-up ocorre, mas sem rotina suficientemente formal.</p><p>• Oferta comercial é compreendida internamente, com oportunidade de formalização.</p></div>
+<div class="card"><div class="eyebrow">Divergências ilustrativas</div><h2>Pontos que merecem aprofundamento</h2><p>• Diretoria percebe maior uso de indicadores que a operação.</p><p>• Visões diferentes sobre autonomia comercial.</p><p>• Divergência sobre confiabilidade e disponibilidade dos dados.</p></div></div></section>
+<div class="card"><div class="eyebrow">Leitura metodológica</div><h2>O MAPA organiza sinais; não encerra causalidade</h2><p>A convergência reforça consistência da percepção. A divergência revela assimetrias que podem justificar investigação posterior. Quando é necessário compreender causas e prescrever, a jornada pode evoluir para SONDA.</p></div>
+<div class="btnrow"><a class="btn alt" href="formulario.html">Experimentar formulário</a><a class="btn" href="../">Voltar ao ambiente de avaliação</a></div><footer>MAPA REVIZI • caso-modelo demonstrativo</footer></main></body></html>
