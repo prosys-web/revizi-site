@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Scan — Resultado | REVIZI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--roxo:#5415A3;--lilas:#A863FF;--dourado:#C89B4A;--bg1:#090414;--bg2:#150D27;--cinza:#ccc;--branco:#fff}
+*{box-sizing:border-box}body{margin:0;background:var(--bg1);color:var(--branco);font-family:Inter,sans-serif}.wrap{max-width:680px;margin:auto;padding:36px 20px 70px}
+.brand{text-align:center;font-family:'Cormorant Garamond',serif;color:var(--dourado);font-size:25px;font-weight:700}.subbrand{text-align:center;color:var(--cinza);font-size:10px;letter-spacing:2px;text-transform:uppercase}
+.intro{text-align:center;margin:28px auto}.intro h1{font-family:'Cormorant Garamond',serif;font-size:31px;margin:0 0 8px}.intro p{color:var(--cinza);font-size:13.5px;line-height:1.6}
+.score{text-align:center;background:var(--bg2);border-radius:16px;padding:26px;margin-bottom:18px}.score b{font-family:'Cormorant Garamond',serif;font-size:54px;color:var(--dourado)}.score span{display:block;color:var(--cinza);font-size:11px;text-transform:uppercase;letter-spacing:1px}
+.box{background:var(--bg2);border-radius:14px;padding:20px;margin:16px 0}.box h3{font-family:'Cormorant Garamond',serif;color:var(--dourado);margin:0 0 10px}.box li{color:var(--cinza);font-size:13px;margin:7px 0}
+.rrow{display:grid;grid-template-columns:150px 1fr 30px;gap:10px;align-items:center;margin:12px 0;font-size:12px}.bar{height:7px;background:#090414;border-radius:5px;overflow:hidden}.fill{height:100%;background:linear-gradient(90deg,var(--roxo),var(--lilas))}
+.disclaimer{font-size:12px;color:var(--cinza);line-height:1.6;border:1px solid rgba(200,155,74,.25);border-radius:12px;padding:16px}
+@media(max-width:520px){.rrow{grid-template-columns:110px 1fr 25px}}
+</style></head>
+<body><div class="wrap"><div class="brand">REVIZI</div><div class="subbrand">Estruturação Comercial</div>
+<div class="intro"><h1>Sua leitura inicial</h1><p>O resultado abaixo organiza sinais observados nas suas respostas. Ele não confirma causas nem prescreve uma intervenção.</p></div>
+<div class="score"><b id="score">0</b><span>Score geral de sinalização · escala 0–10</span></div>
+<div class="box" id="dims"></div><div class="box"><h3>Sinais positivos observados</h3><ul id="positivos"></ul></div>
+<div class="box"><h3>Áreas de atenção</h3><ul id="atencao"></ul></div>
+<div class="disclaimer"><strong style="color:var(--dourado)">Como interpretar:</strong> score sinaliza; não diagnostica. Uma pontuação baixa ou intermediária indica um ponto que pode merecer aprofundamento. A confirmação de causas exige investigação compatível com as camadas posteriores do Método REVIZI.</div>
+</div>
+<script>
+const q=new URLSearchParams(location.search);
+const vals=[1,2,3,4,5,6].map(i=>Number(q.get('d'+i)));
+const score=Number(q.get('score'));
+const names=['Estrutura de Oferta','Tração Comercial','Governança de Decisão','Presença Digital','Capacidade de Conversão','Maturidade de Dado'];
+if(!Number.isFinite(score)||vals.some(v=>![0,5,10].includes(v))){document.body.innerHTML='<div style="padding:40px;color:white;font-family:Arial">Resultado inválido.</div>';throw new Error('resultado inválido')}
+document.getElementById('score').textContent=String(score).replace('.',',');
+document.getElementById('dims').innerHTML='<h3>Seis dimensões observadas</h3>'+vals.map((v,i)=>'<div class="rrow"><span>'+names[i]+'</span><div class="bar"><div class="fill" style="width:'+v*10+'%"></div></div><b>'+v+'</b></div>').join('');
+const pos=document.getElementById('positivos'),att=document.getElementById('atencao');
+vals.forEach((v,i)=>{const li=document.createElement('li');li.textContent=names[i]+(v===10?' apresenta sinal favorável nas respostas informadas.':' merece observação adicional nas respostas informadas.');(v===10?pos:att).appendChild(li)});
+if(!pos.children.length)pos.innerHTML='<li>Nenhuma dimensão atingiu o nível máximo de sinalização nesta leitura inicial.</li>';
+if(!att.children.length)att.innerHTML='<li>Nenhuma área de atenção foi sinalizada nesta aplicação.</li>';
+</script></body></html>
