@@ -1,0 +1,22 @@
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Mapa — Avaliação | REVIZI</title><style>body{margin:0;background:#090414;color:#ccc;font-family:Arial,sans-serif;display:flex;min-height:100vh;align-items:center;justify-content:center}.msg{text-align:center;padding:30px}</style></head><body><div class="msg" id="msg">Carregando formulário do Mapa...</div><script>
+(async()=>{
+  try{
+    const r=await fetch('formulario.html?v=avaliacao');
+    if(!r.ok)throw new Error('HTTP '+r.status);
+    let html=await r.text();
+    const inicio=html.indexOf('async function enviarRespostas(){');
+    const fim=html.indexOf("document.getElementById('btnEntendi')",inicio);
+    if(inicio<0||fim<0)throw new Error('Estrutura do formulário não reconhecida');
+    const nova=`function enviarRespostas(){
+  const dados=coletarRespostas();
+  document.getElementById('msgProcessando').textContent='Registrando suas respostas...';
+  const post=document.createElement('form');post.method='POST';post.action=APPS_SCRIPT_URL;post.style.display='none';
+  const campos={acao:'submeterRespostaMapaForm',casoId:dados.casoId,respondenteNum:dados.respondenteNum,respNome:dados.respNome,respFuncao:dados.respFuncao,respEmpresa:dados.respEmpresa,respEmail:dados.respEmail,respWhatsapp:dados.respWhatsapp,respostasJson:JSON.stringify(dados.respostas)};
+  Object.entries(campos).forEach(([k,v])=>{const input=document.createElement('input');input.type='hidden';input.name=k;input.value=String(v??'');post.appendChild(input);});
+  document.body.appendChild(post);post.submit();
+}\n\n`;
+    html=html.slice(0,inicio)+nova+html.slice(fim);
+    document.open();document.write(html);document.close();
+  }catch(e){document.getElementById('msg').textContent='Não foi possível carregar o formulário de avaliação do Mapa. '+(e.message||'');}
+})();
+</script></body></html>
